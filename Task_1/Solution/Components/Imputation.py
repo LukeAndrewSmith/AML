@@ -1,4 +1,4 @@
-klearn.impute import SimpleImputer
+from sklearn.impute import SimpleImputer
 import numpy as np
 import pandas as pd
 
