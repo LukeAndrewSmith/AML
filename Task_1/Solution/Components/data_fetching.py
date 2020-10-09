@@ -4,7 +4,7 @@ import sys,os
 def get_data():
 
     package_directory = os.path.dirname(os.path.abspath(__file__))
-    print(package_directory)
+    # print(package_directory)
 
     x_train = pd.read_csv(package_directory+'/../../Data/X_train.csv')
     x_train = x_train.drop('id', 1)
