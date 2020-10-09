@@ -1,6 +1,6 @@
 from sklearn.impute import SimpleImputer
-import numpy as np
 import pandas as pd
+import numpy as np
 
 def mean(x):
     fill_NaN = SimpleImputer(missing_values=np.nan, strategy='mean')
