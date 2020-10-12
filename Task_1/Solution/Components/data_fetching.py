@@ -20,3 +20,5 @@ def get_test_data():
     x_test = x_test.drop('id', 1)
     
     return x_test
+
+
