@@ -16,6 +16,10 @@ def select_percentile_regr(X,y,percent=50):
     X = SelectPercentile(f_regression, percent).fit_transform(X, y)
     return X # TODO: also return which columns were deleted so that we can remove them from X_test
 
-def select_percentile_mut_inf(X,y,percent=50):
-    X = SelectPercentile(mutual_info_regression, percent).fit_transform(X, y)
+def select_percentile_mut_inf(X,y,x_test=None,percent=50):
+    fs = SelectPercentile(mutual_info_regression, percent).fit_transform(X, y)
+    X = fs.transform(X)
+    if x_test is not None:
+        x_test = x_test.transform(X)
+        return X,x_test
     return X # TODO: also return which columns were deleted so that we can remove them from X_test
