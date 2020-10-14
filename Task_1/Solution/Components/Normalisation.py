@@ -7,4 +7,4 @@ def select():
 
 def gaussian(X):
     qt = QuantileTransformer(n_quantiles=100, output_distribution='normal')
-    return pd.DataFrame(qt.fit_transform(X))
+    return pd.DataFrame(qt.fit_transform(X),columns=X.columns)
