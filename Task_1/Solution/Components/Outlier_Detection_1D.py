@@ -1,6 +1,12 @@
-def z_score(X,verbose=False):
+
+def z_score(X,x_extra=None,verbose=False):
+    if x_extra is not None:
+        X.append(x_extra)
     mean = X.mean(axis=0)
     std = X.std(axis=0)
+    if x_extra is not None:
+        n_extra_rows = len(x_extra.index)
+        X.drop(X.tail(n_extra_rows).index,inplace=True)
     z_scores = X.apply(lambda row: (row-mean).div(std), axis=1)
     threashold = 3
     if verbose:
