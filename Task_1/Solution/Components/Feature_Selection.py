@@ -47,3 +47,6 @@ def drop_correlated(X,x_test=None,verbose=False, percent=0.95):
         return X, x_test
 
     return X
+
+def feature_union(X,x_test=None,verbose=False):
+    
