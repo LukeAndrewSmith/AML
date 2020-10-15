@@ -37,7 +37,7 @@ def magic_indices(X_train,y_train, n_outliers=10, mask=None, verbose=False):
 
     # do nothing if no lines selected
     if n_outliers == 0:
-        return X,y,mask
+        return X_train,y_train,mask
     
     # take first n_outliers
     selected = magic_indices[0:n_outliers]
