@@ -45,14 +45,14 @@ def mean2(X, x_supp):
         x_supp.columns = X.columns
     imp = SimpleImputer(missing_values=np.nan, strategy='mean')
     imp.fit(pd.concat([X,x_supp],ignore_index=True))
-    return pd.DataFrame(imp.transform(X),columns=X.columns), pd.DataFrame(imp.transform(x_supp))
+    return pd.DataFrame(imp.transform(X),columns=X.columns), pd.DataFrame(imp.transform(x_supp),columns=x_supp.columns)
 
 def median2(X, x_supp):
     if x_supp is not None:
         x_supp.columns = X.columns    
     imp = SimpleImputer(missing_values=np.nan, strategy='median')
     imp.fit(pd.concat([X,x_supp],ignore_index=True))
-    return pd.DataFrame(imp.transform(X),columns=X.columns), pd.DataFrame(imp.transform(x_supp))
+    return pd.DataFrame(imp.transform(X),columns=X.columns), pd.DataFrame(imp.transform(x_supp),columns=x_supp.columns)
 
 def iterative_regression2(X, x_supp, n_nearest_features=10): # default regressor: BayesianRidge
     if x_supp is not None:
@@ -60,12 +60,12 @@ def iterative_regression2(X, x_supp, n_nearest_features=10): # default regressor
     imp = IterativeImputer(missing_values=np.nan, 
                             max_iter=10, initial_strategy='median',random_state=0, n_nearest_features=n_nearest_features)
     imp.fit(pd.concat([X,x_supp],ignore_index=True))
-    return pd.DataFrame(imp.transform(X),columns=X.columns), pd.DataFrame(imp.transform(x_supp))
+    return pd.DataFrame(imp.transform(X),columns=X.columns), pd.DataFrame(imp.transform(x_supp),columns=x_supp.columns)
 
 def knn2(X, x_supp, neighbors=1):
     if x_supp is not None:
         x_supp.columns = X.columns     
     imp = KNNImputer(missing_values=np.nan, weights='distance',n_neighbors=neighbors)
     imp.fit(pd.concat([X,x_supp],ignore_index=True))
-    return pd.DataFrame(imp.transform(X),columns=X.columns), pd.DataFrame(imp.transform(x_supp))
+    return pd.DataFrame(imp.transform(X),columns=X.columns), pd.DataFrame(imp.transform(x_supp),columns=x_supp.columns)
 
