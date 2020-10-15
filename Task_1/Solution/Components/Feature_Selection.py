@@ -44,9 +44,6 @@ def drop_correlated(X,x_test=None,verbose=False, percent=0.95):
     # Drop features 
     if x_test is not None:
         x_test = x_test.drop(x_test[to_drop], axis=1)
-        print(x_test.columns)
-        print(X.columns)
-        print(x_test.columns is X.columns)
         return X, x_test
 
     return X
