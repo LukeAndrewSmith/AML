@@ -5,8 +5,8 @@ import pandas as pd
 def select():
     print("Hi")
 
-def gaussian(X):
-    qt = QuantileTransformer(n_quantiles=100, output_distribution='normal')
+def gaussian(X,n_quants=100):
+    qt = QuantileTransformer(n_quantiles=n_quants, output_distribution='normal')
     return pd.DataFrame(qt.fit_transform(X),columns=X.columns)
 
 def yeo_johnson(X, standardize=True):
