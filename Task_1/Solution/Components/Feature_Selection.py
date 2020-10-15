@@ -23,3 +23,27 @@ def select_percentile_mut_inf(X,y,x_test=None,percent=50):
         x_test = fs.transform(x_test)
         return X,x_test
     return X # TODO: also return which columns were deleted so that we can remove them from X_test
+
+def drop_correlated(X,x_test=None,verbose=False, percent=0.95):
+    # TODO: Pearson and spearman correlation for non linear correlation
+    
+    # Create correlation matrix
+    corr_matrix = X.corr().abs()
+
+    # Select upper triangle of correlation matrix
+    upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
+
+    # Find index of feature columns with correlation greater than percent
+    to_drop = [column for column in upper.columns if any(upper[column] > percent)]
+
+    if verbose:
+        print(len(to_drop))
+
+    X = X.drop(X[to_drop], axis=1)
+
+    # Drop features 
+    if x_test is not None:
+        x_test.drop(x_test[to_drop], axis=1)
+        return X, x_test
+
+    return X
