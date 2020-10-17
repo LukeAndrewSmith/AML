@@ -48,5 +48,10 @@ def drop_correlated(X,x_test=None,verbose=False, percent=0.95):
 
     return X
 
-def feature_union(X,x_test=None,verbose=False):
-    return
+def rfe(X,y,x_test):
+    selector = RFE(estimator, n_features_to_select=5, step=1)
+    selector = selector.fit(X, y)
+    return selector.transform(X), selector.transform(xtest)
+
+# def feature_union(X,x_test=None,verbose=False):
+#     return
