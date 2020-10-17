@@ -52,7 +52,7 @@ def drop_correlated(X,x_test=None,verbose=False, percent=0.95):
 def rfe(X,y,x_test):
     selector = RFE(Lasso(), n_features_to_select=30, step=1)
     selector = selector.fit(X, y)
-    return selector.transform(X), selector.transform(x_test)
+    return pd.Dataframe(selector.transform(X), columns=X.columns), pd.Dataframe(selector.transform(x_test), columns=x_test.columns)
 
 # def feature_union(X,x_test=None,verbose=False):
 #     return
