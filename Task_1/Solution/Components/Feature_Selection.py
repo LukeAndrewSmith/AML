@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.feature_selection import SelectPercentile
 from sklearn.feature_selection import f_regression
 from sklearn.feature_selection import mutual_info_regression
+from sklearn.feature_selection import RFE
 
 def select_lasso(X,y):
     lasso = LassoLarsCV(normalize=True, max_iter=1000).fit(X,y)
