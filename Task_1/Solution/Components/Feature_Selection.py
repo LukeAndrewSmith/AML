@@ -1,5 +1,5 @@
 from sklearn.feature_selection import SelectFromModel
-from sklearn.linear_model import LassoLarsCV
+from sklearn.linear_model import LassoLarsCV, Lasso
 import pandas as pd
 import numpy as np
 
