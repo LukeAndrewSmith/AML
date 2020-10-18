@@ -42,5 +42,5 @@ class Z_Score_Outlier():
             setattr(self, parameter, value)
         return self
 
-    def score(self,X,y=None) #... how to score this??
+    def score(self,X,y=None): #... how to score this??
         return 1
