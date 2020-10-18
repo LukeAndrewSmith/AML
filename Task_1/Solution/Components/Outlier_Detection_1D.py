@@ -1,3 +1,5 @@
+import pandas as pd
+import numpy as np
 
 def z_score(X,x_extra=None,verbose=False):
     if x_extra is not None:
@@ -20,12 +22,15 @@ class Z_Score_Outlier():
     def fit(self, X, y):
         self.mean = X.mean(axis=0)
         self.std = X.std(axis=0)
-        self.z_scores = X.apply(lambda row: (row-mean).div(std), axis=1)
+        X2 = pd.DataFrame(X)
+        self.z_scores = X2.apply(lambda row: (row-mean).div(std), axis=1)
         return self
 
     def transform(self, X, y=None):
         try:
-            return X.mask(z_scores>threashold)
+            X2 = pd.DataFrame(X)
+            X2 = X2.mask(z_scores>threashold)
+            return X2.values
         except Exception as err:
             print('Z_Score_Outlier.transform(): {}'.format(err))
         return X
