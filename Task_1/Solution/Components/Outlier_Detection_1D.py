@@ -41,3 +41,6 @@ class Z_Score_Outlier():
         for parameter, value in parameters.items():
             setattr(self, parameter, value)
         return self
+
+    def score(self,X,y=None) #... how to score this??
+        return 1
