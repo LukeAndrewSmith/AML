@@ -20,9 +20,9 @@ class Z_Score_Outlier():
         self.threashold = threashold
 
     def fit(self, X, y):
-        self.mean = X.mean(axis=0)
-        self.std = X.std(axis=0)
         X2 = pd.DataFrame(X)
+        self.mean = X2.mean(axis=0)
+        self.std = X2.std(axis=0)
         self.z_scores = X2.apply(lambda row: (row-mean).div(std), axis=1)
         return self
 
