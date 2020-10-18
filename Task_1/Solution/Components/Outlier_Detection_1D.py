@@ -33,3 +33,11 @@ class Z_Score_Outlier():
     def fit_transform(self, X, y=None):
         self.fit(X,y)
         return self.transform(X,y)
+
+    def get_params(self, deep=True):
+        return {"threashold": self.threashold}
+
+    def set_params(self, **parameters):
+        for parameter, value in parameters.items():
+            setattr(self, parameter, value)
+        return self
