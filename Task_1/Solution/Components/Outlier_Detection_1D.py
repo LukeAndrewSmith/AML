@@ -13,23 +13,23 @@ def z_score(X,x_extra=None,verbose=False):
         print('# Outliers: ', (z_scores>threashold).sum().sum())
     return X.mask(z_scores>threashold)
 
-# class Z_Score_Outlier():
-#     def __init__(self, percentiles=3):
-#         self.percentiles = percentiles
+class Z_Score_Outlier():
+    def __init__(self, threashold=3):
+        self.threashold = threashold
 
-#     def fit(self, X, Y):
-#        return self
+    def fit(self, X, y):
+        self.mean = X.mean(axis=0)
+        self.std = X.std(axis=0)
+        self.z_scores = X.apply(lambda row: (row-mean).div(std), axis=1)
+        return self
 
-#     def transform(self, X, Y=None):
-#         try:
-#             if self.features < X.shape[1]:
-#                 if Y is not None:
-#                     self.selector.fit(X, Y)
-#                 return selector.transform(X)
-#         except Exception as err:
-#             print('MyFeatureSelector.transform(): {}'.format(err))
-#        return X
+    def transform(self, X, y=None):
+        try:
+            return X.mask(z_scores>threashold)
+        except Exception as err:
+            print('Z_Score_Outlier.transform(): {}'.format(err))
+        return X
 
-#     def fit_transform(self, X, Y=None):
-#         self.fit(X, Y)
-#         return self.transform(X, Y)
+    def fit_transform(self, X, y=None):
+        self.fit(X,y)
+        return self.transform(X,y)
