@@ -56,7 +56,7 @@ def rfe(X,y,x_test):
     x_test_cols = x_test.columns 
     selector.transform(X)
     selector.transform(x_test)
-    return pd.Dataframe(X, columns=X_cols), pd.Dataframe(x_test, columns=x_test_cols)
+    return pd.DataFrame(X, columns=X_cols), pd.DataFrame(x_test, columns=x_test_cols)
 
 # def feature_union(X,x_test=None,verbose=False):
 #     return
