@@ -23,13 +23,13 @@ class Z_Score_Outlier():
         X2 = pd.DataFrame(X)
         self.mean = X2.mean(axis=0)
         self.std = X2.std(axis=0)
-        self.z_scores = X2.apply(lambda row: (row-mean).div(std), axis=1)
+        self.z_scores = X2.apply(lambda row: (row-self.mean).div(self.std), axis=1)
         return self
 
     def transform(self, X, y=None):
         try:
             X2 = pd.DataFrame(X)
-            X2 = X2.mask(z_scores>threashold)
+            X2 = X2.mask(self.z_scores>self.threashold)
             return X2.values
         except Exception as err:
             print('Z_Score_Outlier.transform(): {}'.format(err))
