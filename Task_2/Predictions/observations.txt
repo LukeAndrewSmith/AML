@@ -2,3 +2,20 @@ place to write down some configs plus cross val scores:
 
 Normalisation.gaussian + ovr svc: cv=3 0.549074074074074
 
+Nomalisation gaussian + ovr svc balanced wieghts cv=3: 0.6927777777777777
+
+
+for two step classif:
+    task_1: 
+        gaussian, balanced svc : 0.826
+        gaussian, smote resampling, balanced svc: 0.8772222222222222
+        
+
+    task_2:
+        gaussian, balanced svc: 0.757
+
+    combined: 
+        without smote: 0.701
+        with smote: 0.656
+
+        
