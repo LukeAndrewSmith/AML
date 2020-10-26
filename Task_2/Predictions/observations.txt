@@ -15,7 +15,10 @@ for two step classif:
         gaussian, balanced svc: 0.757
 
     combined: 
-        without smote: 0.701
+        without smote: 0.697
         with smote: 0.656
+
+
+    
 
         

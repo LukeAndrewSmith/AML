@@ -13,7 +13,7 @@ def get_train_data():
     y_train = y_train.drop('id', 1)
     
     x_train = pd.DataFrame(np.ascontiguousarray(x_train))
-    y_train = pd.DataFrame(np.ascontiguousarray(y_train))
+    y_train = pd.DataFrame(np.ascontiguousarray(y_train), columns=['y'])
                            
     return x_train, y_train
 
