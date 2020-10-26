@@ -1,0 +1,4 @@
+place to write down some configs plus cross val scores:
+
+Normalisation.gaussian + ovr svc: cv=3 0.549074074074074
+
