@@ -10,7 +10,9 @@ for two step classif:
         gaussian, balanced svc : 0.826
         gaussian, smote resampling, balanced svc: 0.8772222222222222
         
-
+        gridsearch : classification__C': 1.0, 'classification__gamma': 0.001, 'classification__kernel': 'rbf'}
+        0.8291666666666666
+        
     task_2:
         gaussian, balanced svc: 0.757
 
