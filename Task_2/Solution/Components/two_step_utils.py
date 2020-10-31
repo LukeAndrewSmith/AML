@@ -31,3 +31,16 @@ def combine_predictions(y_pred_1, y_pred_2):
             
     return y_pred
 
+def vote_prediction(y_pred_1, y_pred_2, y_pred_3):
+    # take the majority vote
+    y_pred = list()
+    for i, y in enumerate(y_pred_1):
+        # take the prediction of y_pred_1 if y==1 (large group), else need to check the distinguished prediction from y_pred_2
+        if y == y_pred_2[i] or y==y_pred_3[i]:
+            y_pred.append(y)
+        else:
+            # the other two have to be the same then
+            y_pred.append(y_pred_2[i])
+            
+    return y_pred
+
