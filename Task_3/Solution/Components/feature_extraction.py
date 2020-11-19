@@ -5,10 +5,10 @@ import biosppy.signals.ecg as ecg
 def get_features(X=None, types=['heartbeats'],verbose=False):
     X_new = []
     if 'heartbeats' in types:
-        X_new.append(heartbeats(X,verbose=verbose))
+        X_new.append(__heartbeats(X,verbose=verbose))
     return pd.concat(X_new,axis=1,ignore_index=True)
 
-def heartbeats(X=None,verbose=False):
+def __heartbeats(X=None,verbose=False):
     X_new = []
     for index, row in X.iterrows(): 
         _, _, peaks, _, templates, _, _ = ecg.ecg(signal=row.dropna(), sampling_rate=300.0, show=False)
