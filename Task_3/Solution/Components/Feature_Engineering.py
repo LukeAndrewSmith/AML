@@ -3,6 +3,25 @@ import pandas as pd
 import neurokit2 as nk
 from multiprocessing import Pool
 
+def extract_features(X=None):
+    X_2 = []
+    index_failed = []
+    for index, row in X.iterrows():
+        if index % 100 == 0:
+            print(index)
+        try:
+            signals,_ = nk.ecg_process(row.dropna(), sampling_rate=300)
+            peak_types = ["ECG_P_Peaks","ECG_Q_Peaks","ECG_R_Peaks","ECG_S_Peaks","ECG_T_Peaks"]
+            peaks = [list(signals.index[signals[peak_type]==1]) for peak_type in peak_types]
+            X_2.append(extract_features_peaks(index,peaks))
+        except Exception as inst:
+            print("Index failed: ",index, "with error: \n", inst)
+            index_failed.append(index)
+            X_2.append(extract_features_peaks(index,[]))
+            continue
+        
+    return pd.DataFrame(X_2)
+
 def extract_features_parrallel(X=None):
     X_2 = []
     index_failed = []
@@ -11,7 +30,7 @@ def extract_features_parrallel(X=None):
     with Pool(processes=16) as pool:
         tuples = [(index,row.dropna().tolist()) for index,row in X.iterrows()]
         X_2 = pool.starmap(process_row,tuples)
-    X_2 = [x[0] if x is not None or [] else [0]*len(X_2[0][0]) for x in X_2] # Put zeros where ecg_process failed and unpack excessive nesting
+    X_2 = [x if x is not None or [] else [0]*len(X_2[0]) for x in X_2] # Put zeros where ecg_process failed
     return pd.DataFrame(X_2)
         
 def process_row(index,row):
@@ -19,13 +38,17 @@ def process_row(index,row):
         signals,_ = nk.ecg_process(row, sampling_rate=300)
         peak_types = ["ECG_P_Peaks","ECG_Q_Peaks","ECG_R_Peaks","ECG_S_Peaks","ECG_T_Peaks"]
         peaks = [list(signals.index[signals[peak_type]==1]) for peak_type in peak_types] 
-        return [extract_features_peaks(peaks)]
-    except:
-        print("Index failed: ",index)
+    except Exception as inst:
+        print("Index failed: ",index, "with error: \n", inst)
+        peaks = None
+    return extract_features_peaks(index,peaks)
+    
 
+def extract_features_peaks(index,peaks):
 
-def extract_features_peaks(peaks):
-
+    if peaks is None:
+        return None
+    
     features = []
     
     if np.mean(np.diff(peaks[2])) != 0:
@@ -53,6 +76,9 @@ def extract_features_peaks(peaks):
         # to represent a valid heartbeat <p,q,r,s,t>
     peaks = peaks_cleaning(peaks)
     
+    if peaks == []:
+        print("Error in: ", index)
+    
     # Variablity measures: multi peak types
     for i in range(len(peaks)):
         for j in range(len(peaks)):
@@ -60,6 +86,9 @@ def extract_features_peaks(peaks):
             features.append(np.mean(diff))
             features.append(np.var(diff))
             
+    if None in features or np.isnan(np.min(np.array(features))): 
+        print("Errroooor (none in features): ", index)
+    
     return features
 
 
@@ -86,7 +115,7 @@ def peaks_cleaning(peaks):
     while i < len(peaks[0]):
         i += 1
         if i <= np.min(list(map(len, peaks)))-1:
-            for j in range(len(peaks)-1):
+            for j in range(len(peaks)-2):
                 while (peaks[j][i] > peaks[j+1][i]):
                     peaks[j+1].pop(i)
                     if i >= len(peaks[j+1]): # Popping so check index i valid
