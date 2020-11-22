@@ -1,17 +1,52 @@
 import numpy as np
 import pandas as pd
 import neurokit2 as nk
+from multiprocessing import Pool
 
-def extract_features(X=None):
+# def extract_features(X=None):
+#     X_2 = []
+#     index_failed = []
+#     for index, row in X.iterrows():
+#         if index % 100 == 0:
+#             print(index)
+#         try:
+#             signals,_ = nk.ecg_process(row.dropna(), sampling_rate=300)
+#         except:
+#             print("Index failed: ",index)
+#             index_failed.append(index)
+#             continue
+#         peak_types = ["ECG_P_Peaks","ECG_Q_Peaks","ECG_R_Peaks","ECG_S_Peaks","ECG_T_Peaks"]
+#         peaks = [list(signals.index[signals[peak_type]==1]) for peak_type in peak_types]
+#         X_2.append(extract_features_peaks(peaks))
+#     return pd.DataFrame(X_2)
+
+def extract_features_parrallel(X=None):
     X_2 = []
-    for index, row in X.iterrows():
-        print(index)
+    index_failed = []
+    threads = list()
+    
+    with Pool(processes=16) as pool:
+        tuples = [(index,row.dropna().tolist()) for index,row in X.iterrows()]
+        X_2 = pool.starmap(process_row,tuples)
+    print(type(X_2))
+    print(type(X_2[0]))
+#     print(X_2)
+    return X_2
+#     return pd.DataFrame(X_2)
+        
+def process_row(index,row):
+    try:
         signals,_ = nk.ecg_process(row.dropna(), sampling_rate=300)
         peak_types = ["ECG_P_Peaks","ECG_Q_Peaks","ECG_R_Peaks","ECG_S_Peaks","ECG_T_Peaks"]
-        peaks = [list(signals.index[signals[peak_type]==1]) for peak_type in peak_types]
-        X_2.append(extract_features_peaks(peaks))
-    return pd.DataFrame(X_2)
-        
+        peaks = [list(signals.index[signals[peak_type]==1]) for peak_type in peak_types] 
+#         if index % 100 == 0:
+#             print("Done: ", index)
+        return [extract_features_peaks(peaks)]
+    except:
+        print("Index failed: ",index)
+#         index_failed.append(index)
+
+
 def extract_features_peaks(peaks):
 
     features = []
