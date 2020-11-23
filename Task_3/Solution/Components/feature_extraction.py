@@ -114,7 +114,6 @@ def process_row(index,row,verbose=False):
         ecg_clean = None
     return extract_features_peaks(index,peaks,ecg_clean,verbose)
     
-
 def extract_features_peaks(index,peaks,ecg_clean,verbose=False):
 
     if peaks is None or ecg_clean is None:
