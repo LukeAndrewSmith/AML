@@ -39,7 +39,10 @@ def process_row(index,row):
         peak_types = ["ECG_P_Peaks","ECG_Q_Peaks","ECG_R_Peaks","ECG_S_Peaks","ECG_T_Peaks"]
         peaks = [list(signals.index[signals[peak_type]==1]) for peak_type in peak_types] 
     except Exception as inst:
-        print("Index failed: ",index, "with error: \n", inst)
+        # NeuroKit2 Problems: sometimes it fails miserably during nk.ecg_process() for wierd reasons that by my
+        # investigation shouldn't be happenning.
+        # TODO: FIND A BETTER LIBRARY (for now just replace with zeros)
+        print(index, " failed with error: ", inst)
         peaks = None
     return extract_features_peaks(index,peaks)
     
@@ -60,7 +63,7 @@ def extract_features_peaks(index,peaks):
     ######################
     # Single-peak type measures
         # For the single peak type measure we wan't all the data that ecg_process found
-        
+            
     # Variablity measures: single peak type
     for i in range(len(peaks)):
         peak = peaks[i]
@@ -76,9 +79,6 @@ def extract_features_peaks(index,peaks):
         # to represent a valid heartbeat <p,q,r,s,t>
     peaks = peaks_cleaning(peaks)
     
-    if peaks == []:
-        print("Error in: ", index)
-    
     # Variablity measures: multi peak types
     for i in range(len(peaks)):
         for j in range(len(peaks)):
@@ -86,8 +86,13 @@ def extract_features_peaks(index,peaks):
             features.append(np.mean(diff))
             features.append(np.var(diff))
             
-    if None in features or np.isnan(np.min(np.array(features))): 
-        print("Errroooor (none in features): ", index)
+    
+    # NeuroKit2 Problems: sometimes it only identifies a single peak for one of the p,q,r,s,t peaks, in which 
+    # case a diff will result in [] and so NaNs when mean/var is calculated
+    # TODO: FIND A BETTER LIBRARY (for now just replace with zeros)
+    if np.isnan(np.min(np.array(features))):
+        features = [x if not np.isnan(x) else 0 for x in features]
+        print(index, ": NaN in features")
     
     return features
 
