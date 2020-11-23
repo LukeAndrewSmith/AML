@@ -21,7 +21,7 @@ def get_engineered_train_data():
 
     package_directory = os.path.dirname(os.path.abspath(__file__))
 
-    x_train = pd.read_csv(package_directory+'/../../Data/X_Feature_Extracted.csv')
+    x_train = pd.read_csv(package_directory+'/../../Data/peak_feat_train.csv')
 
     y_train = pd.read_csv(package_directory+'/../../Data/y_train.csv')
     y_train = y_train.drop('id', 1)
@@ -44,7 +44,7 @@ def get_test_data():
 def get_engineered_test_data():
     package_directory = os.path.dirname(os.path.abspath(__file__))
 
-    x_test = pd.read_csv(package_directory+'/../../Data/X_Test_Feature_Extracted.csv')
+    x_test = pd.read_csv(package_directory+'/../../Data/peak_feat_test.csv')
     
     x_test = pd.DataFrame(np.ascontiguousarray(x_test))
                            
