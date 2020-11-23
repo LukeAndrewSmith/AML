@@ -41,4 +41,13 @@ def get_test_data():
                            
     return x_test
 
+def get_engineered_test_data():
+    package_directory = os.path.dirname(os.path.abspath(__file__))
+
+    x_test = pd.read_csv(package_directory+'/../../Data/X_Test_Feature_Extracted.csv')
+    
+    x_test = pd.DataFrame(np.ascontiguousarray(x_test))
+                           
+    return x_test
+
 
