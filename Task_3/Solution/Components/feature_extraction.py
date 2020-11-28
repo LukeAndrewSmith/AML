@@ -15,7 +15,26 @@ def get_features(X=None, types=['heartbeats'],verbose=False,precomputed=None):
         X_new.append(__timeseries(X,verbose=verbose,precomputed=precomputed))
     if 'peaks' in types:
         X_new.append(__peaks(X,verbose=verbose,precomputed=precomputed))
+    if 'hrv' in types:
+        X_new.append(__hrv(X,verbose=verbose,precomputed=precomputed))
     return pd.concat(X_new,axis=1,ignore_index=True)
+
+def __hrv(X=None,verbose=False,precomputed=None):
+    if precomputed == 'train':
+        X_new = pd.read_csv('../../Data/hrv_feat_train.csv').drop('id', 1)
+    elif precomputed == 'test':
+        X_new = pd.read_csv('../../Data/hrv_feat_test.csv').drop('id', 1)
+    else:
+        X_new = []
+        for index, row in X.iterrows(): 
+            _, _, peaks, _, templates, _, _ = ecg.ecg(signal=row.dropna(), sampling_rate=300.0, show=False)
+            # heart rate variability features
+            hrv = np.array(td.time_domain(rpeaks=peaks,show=False, sampling_rate=300.0, plot=False))
+            #features = np.concatenate([average,variances,[mean_peaks_distances,var_peaks_distances]])
+            X_new.append(hrv)
+        X_new = pd.DataFrame(X_new)
+        X_new = X_new[[0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 14, 15, 18, 19, 24]]
+    return X_new
 
 def __heartbeats(X=None,verbose=False,precomputed=None):
     if precomputed == 'train':
