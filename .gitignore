@@ -134,4 +134,11 @@ dmypy.json
 */Task_3/Data/X_test.csv
 */Task_3/Data/sample.csv
 
+*/Task_4/Data/test_eeg1.csv
+*/Task_4/Data/test_eeg2.csv
+*/Task_4/Data/test_emg.csv
+*/Task_4/Data/train_eeg1.csv
+*/Task_4/Data/train_eeg2.csv
+*/Task_4/Data/train_emg.csv
+*/Task_4/Data/train_labels.csv
 
