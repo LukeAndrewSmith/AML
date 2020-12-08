@@ -2,7 +2,7 @@ import pandas as pd
 import sys,os
 import numpy as np
 
-def get_train_data():
+def get_train_data_separate_signals():
 
     package_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -19,9 +19,13 @@ def get_train_data():
     y_train = y_train.drop('Id', axis=1)
 
     return x_train_eeg_1, x_train_eeg_2, x_train_emg, y_train
-#     return x_train, y_train
 
-def get_test_data():
+def get_train_data():
+    x_train_eeg_1, x_train_eeg_2, x_train_emg, y_train = get_train_data_separate_signals()
+    x_train = np.stack((x_train_eeg_1,x_train_eeg_2,x_train_emg),axis=1)
+    return x_train, y_train
+
+def get_test_data_separate_signals():
 
     package_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -35,3 +39,8 @@ def get_test_data():
     x_test_emg = x_test_emg.drop('Id', axis=1)
 
     return x_test_eeg_1, x_test_eeg_2, x_test_emg
+
+def get_test_data():
+    x_test_eeg_1, x_test_eeg_2, x_test_emg = get_test_data_separate_signals()
+    x_train = np.stack((x_test_eeg_1,x_test_eeg_2,x_test_emg),axis=1)
+    return x_train
