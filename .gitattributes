@@ -24,3 +24,7 @@ Task_3/Data/ts_feat2_train.csv filter=lfs diff=lfs merge=lfs -text
 Task_3/Data/ts_feat_train.csv filter=lfs diff=lfs merge=lfs -text
 Task_3/Data/hrv_feat_test.csv filter=lfs diff=lfs merge=lfs -text
 Task_3/Data/X_train.csv filter=lfs diff=lfs merge=lfs -text
+Task_2/Data/X_test.csv filter=lfs diff=lfs merge=lfs -text
+Task_2/Data/X_train.csv filter=lfs diff=lfs merge=lfs -text
+Task_2/Data/y_train.csv filter=lfs diff=lfs merge=lfs -text
+Task_2/Data/sample.csv filter=lfs diff=lfs merge=lfs -text
