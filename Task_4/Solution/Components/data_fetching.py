@@ -2,7 +2,7 @@ import pandas as pd
 import sys,os
 import numpy as np
 
-def get_train_data_separate_signals():
+def get_train_data_separate_signals(per_subject=False)):
 
     package_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -18,6 +18,10 @@ def get_train_data_separate_signals():
     y_train = pd.read_csv(package_directory+'/../../Data/train_labels.csv')
     y_train = y_train.drop('Id', axis=1)
 
+    if per_subject:
+        return split_df_per_subject(x_train_eeg_1), split_df_per_subject(x_train_eeg_2), 
+                split_df_per_subject(x_train_emg), split_df_per_subject(y_train)
+        
     return x_train_eeg_1, x_train_eeg_2, x_train_emg, y_train
 
 def get_train_data():
@@ -44,3 +48,10 @@ def get_test_data():
     x_test_eeg_1, x_test_eeg_2, x_test_emg = get_test_data_separate_signals()
     x_train = np.stack((x_test_eeg_1,x_test_eeg_2,x_test_emg),axis=1)
     return x_train
+
+def split_df_per_subject(df):
+    #returns a list of three dfs split by subject 
+    df_1 = df.iloc(:21599)
+    df_2 = df.iloc(21600:43199)
+    df_3 = df.iloc(43200:)
+    return [df_1, df_2, df_3]
